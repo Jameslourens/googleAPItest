@@ -16,20 +16,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run a one-line script
+      - name: Single print to the console
         run: echo this is just some sample code 
 
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
 
-      - name: Install dependencies
+      - name: tests would go here
         run: |
-          # Add commands to install dependencies, e.g., npm install or pip install
-          echo Installing dependencies...
-
-      - name: Run tests
-        run: |
-          # Add commands to run your tests, e.g., npm test or pytest
           echo Running tests...
+          echo please can we be taught how to do this before being asked to do it in a formative. 
+          
+        
