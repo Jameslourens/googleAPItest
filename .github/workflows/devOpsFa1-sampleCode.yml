@@ -1,80 +1,34 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main  # or the branch you want to trigger the workflow on
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.x'  # Use the version required by your project
 
-    - name: Install Dependencies
-      run: npm install
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: Build Application
-      run: npm run build
+      - name: Build
+        run: dotnet build --configuration Release
 
-    - name: Cache Node.js modules
-      uses: actions/cache@v3
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Run unit tests
+        run: dotnet test --configuration Release --no-build
 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
-    - name: Install Dependencies
-      run: npm install
-
-    - name: Run Unit Tests
-      run: npm test
-
-    - name: Run Code Coverage
-      run: npm run coverage
-
-    - name: Run Linting
-      run: npm run lint
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: test
-
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-
-    - name: Install Dependencies
-      run: npm install
-
-    - name: Deploy to Staging
-      run: npm run deploy-staging
+      - name: Deploy to staging
+        if: github.ref == 'refs/heads/main'  # Change this if you deploy from another branch
+        run: |
+          # Add your deployment commands here
+       
