@@ -1,7 +1,6 @@
 name: DevOpsFa1-sampleCode
 
 on:
-
   push:
     branches: [ "main" ]
     
@@ -16,6 +15,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Run a one-line script
         run: echo this is just some sample code 
 
@@ -23,3 +23,13 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+      - name: Install dependencies
+        run: |
+          # Add commands to install dependencies, e.g., npm install or pip install
+          echo Installing dependencies...
+
+      - name: Run tests
+        run: |
+          # Add commands to run your tests, e.g., npm test or pytest
+          echo Running tests...
